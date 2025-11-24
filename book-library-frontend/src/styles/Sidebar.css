@@ -1,0 +1,72 @@
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 220px;
+  height: 100vh;
+  background: #6529102f;
+  border-right: 1px solid #2b2403;
+  padding: 16px;
+  transition: left 0.3s ease;
+  z-index: 2000;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+/* Close button */
+.sidebar__close {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  color: #f3d4c7;
+  cursor: pointer;
+  margin-bottom: 14px;
+  margin-left: 180px;
+}
+
+/* BACKDROP */
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 1999;
+}
+
+.sidebar__title {
+  margin: 0 0 12px 0;
+  font-size: 10px;
+  font-weight: 600;
+  color: #f3d4c786;
+}
+
+.sidebar__btn {
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f3d4c79d;
+  cursor: pointer;
+  text-align: left;
+  box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.708);
+}
+
+.sidebar__btn:hover {
+  background: #f2f2f2;
+}
+
+.menu-btn {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  background: #f3d4c79d;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #000;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 2100;
+}

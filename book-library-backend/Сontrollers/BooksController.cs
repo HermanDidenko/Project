@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using BookLibrary.Data;
 using BookLibrary.Models;
+using BookLibrary.Models.DTOs;
+using BookLibrary.Services;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace BookLibrary.Controllers
 {
@@ -9,84 +11,64 @@ namespace BookLibrary.Controllers
     [Route("api/[controller]")]
     public class BooksController : ControllerBase
     {
-        private readonly LibraryContext _context;
+        private readonly IBookService _bookService;
 
-        public BooksController(LibraryContext context)
+        public BooksController(IBookService bookService)
         {
-            _context = context;
+            _bookService = bookService;
         }
+        // PATCH: api/Books/5/favorite
+        [HttpPatch("{id}/favorite")]
+        public async Task<IActionResult> ToggleFavorite(int id)
+        {
+            var book = await _bookService.GetBookByIdAsync(id);
+            if (book == null)
+                return NotFound();
 
+            book.IsFavorite = !book.IsFavorite;
+
+            await _bookService.UpdateBookAsync(id, book);
+
+            return Ok(new { id = book.Id, isFavorite = book.IsFavorite });
+        }
         // GET: api/Books
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooks(
-           string? search = null,
-           string? sort = null,
-           int page = 1,
-           int pageSize = 10)
+        public async Task<ActionResult<PagedResult<BookDto>>> GetBooks(
+          string? search = null,
+          string? sort = null,
+          int page = 1,
+          int pageSize = 10,
+          bool? favoriteOnly = null,
+          int? publisherId = null)
         {
-            var query = _context.Books.AsQueryable();
-
-            //Поиск
-            if (!string.IsNullOrEmpty(search))
-            {
-                query = query.Where(b =>
-                    b.Title.Contains(search) ||
-                    b.Author.Contains(search) ||
-                    b.Genre.Contains(search));
-            }
-
-            // Сортировка
-            query = sort switch
-            {
-                "title" => query.OrderBy(b => b.Title),
-                "author" => query.OrderBy(b => b.Author),
-                "year" => query.OrderBy(b => b.Year),
-                "genre" => query.OrderBy(b => b.Genre),
-                "pages" => query.OrderBy(b => b.Pages),
-                _ => query.OrderBy(b => b.Id)
-            };
-
-            // Пагинация
-            var books = await query
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            return books;
+            var result = await _bookService.GetAllBooksDtoAsync(search, sort, page, pageSize, favoriteOnly, publisherId);
+            return Ok(result);
+        }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Book>> GetBookById(int id)
+        {
+            var book = await _bookService.GetBookByIdAsync(id);
+            if (book == null)
+                return NotFound();
+            return Ok(book);
         }
 
-        // POST: api/Books
-        [HttpPost]
+
+        // POST: api/Book
         [HttpPost]
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
-            _context.Books.Add(book);
-            await _context.SaveChangesAsync();
-
-            return Created($"api/books/{book.Id}", book);
+            var createdBook = await _bookService.AddBookAsync(book);
+            return CreatedAtAction(nameof(GetBookById), new { id = createdBook.Id }, createdBook);
         }
-
 
         // PUT: api/Books/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBook(int id, Book book)
         {
-            if (id != book.Id)
-                return BadRequest();
-
-            _context.Entry(book).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.Books.Any(e => e.Id == id))
-                    return NotFound();
-                else
-                    throw;
-            }
+            var updated = await _bookService.UpdateBookAsync(id, book);
+            if (!updated)
+                return NotFound();
 
             return NoContent();
         }
@@ -96,12 +78,9 @@ namespace BookLibrary.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
-            var book = await _context.Books.FindAsync(id);
-            if (book == null)
+            var deleted = await _bookService.DeleteBookAsync(id);
+            if (!deleted)
                 return NotFound();
-
-            _context.Books.Remove(book);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }

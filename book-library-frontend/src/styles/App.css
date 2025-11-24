@@ -1,0 +1,167 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(rgba(133, 57, 3, 0.799),rgb(19, 14, 0));
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    min-height: 50vh;
+    margin-right: 220px;
+    padding: 0;
+    box-sizing: border-box;
+}
+.login{
+    margin-left: 560px;
+}
+.register{
+    margin-left: -350px;
+}
+
+
+h1 {
+    margin-top: 10px;
+    font-size:50px;
+    font-weight: 200;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: center;
+    color: #f3d4c786;
+    border-radius: 12px;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input,
+select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+button {
+    padding: 10px 16px;
+    background-color: #f3d4c790;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+    button:hover {
+        background-color: #c1450f30;
+    }
+
+    button.delete {
+        background-color: #e74c3c;
+    }
+
+        button.delete:hover {
+            background-color: #c0392b;
+        }
+
+    button.edit {
+        background-color: #2ecc71;
+    }
+
+        button.edit:hover {
+            background-color: #27ae60;
+        }
+.edit-book-container {
+    max-width: 600px;
+    margin: 0 auto;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* ================================= Search Form ======================================= */
+.search-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    background-color: #f3d4c762;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    padding: 14px 18px;
+    margin: 20px auto;
+    max-width: 350px;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.search-form:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+/* === Inputs and Selects === */
+.search-form input,
+.search-form select {
+    padding: 8px 12px;
+    background-color: #f3d4c7;
+    border: 2px solid #dcb3a0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.search-form input:focus,
+.search-form select:focus {
+    border-color: #f28e67;
+    box-shadow: 0 0 5px rgba(242, 142, 103, 0.5);
+}
+
+/* === Button === */
+.search-form button {
+    padding: 8px 16px;
+    background-color: #f28e67;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.search-form button:hover {
+    background-color: #e07247;
+    transform: translateY(-1px);
+}
+
+.search-form button:active {
+    transform: translateY(0);
+}
+
+/* === Adaptivity === */
+@media (max-width: 650px) {
+    .search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+.search-form input,
+.search-form select,
+.search-form button {
+    width: 100%;
+}
+/* ================================= end of Search Form ======================================= */
