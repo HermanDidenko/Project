@@ -25,7 +25,7 @@
   animation: modalFadeIn 0.50s ease;
 }
 
-/* Animation for modal appearance */
+/* Animation  for modal appearance */
 @keyframes modalFadeIn {
   from {
     opacity: 0;
